@@ -6,115 +6,592 @@
 
     <title>Análise de Redes Sociais no Brasil</title>
 
+    <meta
+        name="description"
+        content="Projeto de análise e visualização de dados de redes sociais brasileiras utilizando Python."
+    >
+
     <style>
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        :root {
+            --bg: #07111f;
+            --bg-light: #0d1b2d;
+            --card: #101f33;
+            --blue: #4f8cff;
+            --blue-light: #75a7ff;
+            --text: #f5f7fb;
+            --text-secondary: #aab7c8;
+            --border: rgba(255, 255, 255, 0.08);
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f8;
-            color: #222;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--bg);
+            color: var(--text);
             line-height: 1.6;
         }
 
+        /* =========================
+           NAVBAR
+        ========================= */
+
         header {
-            background-color: #1f4e79;
-            color: white;
-            text-align: center;
-            padding: 50px 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+
+            background: rgba(7, 17, 31, 0.90);
+            backdrop-filter: blur(12px);
+
+            border-bottom: 1px solid var(--border);
         }
 
-        header h1 {
-            font-size: 36px;
-            margin-bottom: 15px;
-        }
+        .navbar {
+            max-width: 1200px;
+            margin: auto;
 
-        header p {
-            font-size: 18px;
-        }
+            height: 75px;
 
-        main {
-            max-width: 1000px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        section {
-            background-color: white;
-            margin-bottom: 25px;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        }
-
-        h2 {
-            color: #1f4e79;
-            margin-bottom: 15px;
-        }
-
-        ul {
-            margin-left: 25px;
-        }
-
-        li {
-            margin-bottom: 8px;
-        }
-
-        .informacoes {
-            background-color: #eef4f8;
-        }
-
-        .tecnologias {
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 15px;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 25px;
         }
 
-        .tecnologia {
-            background-color: #1f4e79;
-            color: white;
-            padding: 8px 14px;
-            border-radius: 20px;
-        }
-
-        .botoes {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .botao {
-            display: inline-block;
-            background-color: #1f4e79;
+        .logo {
             color: white;
             text-decoration: none;
-            padding: 12px 22px;
-            margin: 5px;
-            border-radius: 6px;
+            font-size: 20px;
+            font-weight: bold;
         }
 
-        .botao:hover {
-            background-color: #163a5a;
+        .logo span {
+            color: var(--blue);
         }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        .nav-button {
+            background: var(--blue);
+            color: white !important;
+
+            padding: 10px 18px;
+            border-radius: 8px;
+        }
+
+        .nav-button:hover {
+            background: var(--blue-light);
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+
+            padding: 120px 25px 70px;
+
+            background:
+                radial-gradient(
+                    circle at 80% 20%,
+                    rgba(79, 140, 255, 0.20),
+                    transparent 35%
+                );
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            width: 100%;
+            margin: auto;
+
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .tag {
+            display: inline-block;
+
+            padding: 7px 14px;
+
+            border: 1px solid rgba(79, 140, 255, 0.35);
+            border-radius: 30px;
+
+            color: var(--blue-light);
+            background: rgba(79, 140, 255, 0.08);
+
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: clamp(42px, 6vw, 72px);
+            line-height: 1.05;
+            margin-bottom: 25px;
+        }
+
+        .hero h1 span {
+            color: var(--blue);
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 18px;
+            max-width: 650px;
+            margin-bottom: 30px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .button {
+            display: inline-block;
+
+            padding: 13px 22px;
+
+            border-radius: 8px;
+
+            text-decoration: none;
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        .button-primary {
+            background: var(--blue);
+            color: white;
+        }
+
+        .button-primary:hover {
+            background: var(--blue-light);
+            transform: translateY(-2px);
+        }
+
+        .button-secondary {
+            border: 1px solid var(--border);
+            color: white;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .button-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .hero-card {
+            background: linear-gradient(
+                145deg,
+                #122640,
+                #0b1728
+            );
+
+            border: 1px solid var(--border);
+
+            border-radius: 20px;
+
+            padding: 35px;
+
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.30);
+        }
+
+        .hero-card h3 {
+            font-size: 22px;
+            margin-bottom: 25px;
+        }
+
+        .info-line {
+            display: flex;
+            justify-content: space-between;
+
+            padding: 14px 0;
+
+            border-bottom: 1px solid var(--border);
+
+            gap: 20px;
+        }
+
+        .info-line:last-child {
+            border-bottom: none;
+        }
+
+        .info-line span:first-child {
+            color: var(--text-secondary);
+        }
+
+        .info-line span:last-child {
+            text-align: right;
+            font-weight: bold;
+        }
+
+        /* =========================
+           SECTIONS
+        ========================= */
+
+        section {
+            padding: 100px 25px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 55px;
+        }
+
+        .section-title span {
+            color: var(--blue);
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .section-title h2 {
+            font-size: 38px;
+            margin: 10px 0;
+        }
+
+        .section-title p {
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: auto;
+        }
+
+        /* =========================
+           NUMBERS
+        ========================= */
+
+        #numeros {
+            background: var(--bg-light);
+        }
+
+        .numbers-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .number-card {
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 14px;
+
+            padding: 30px 20px;
+
+            text-align: center;
+
+            transition: 0.3s;
+        }
+
+        .number-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(79, 140, 255, 0.40);
+        }
+
+        .number {
+            color: var(--blue);
+
+            font-size: 38px;
+            font-weight: bold;
+
+            margin-bottom: 5px;
+        }
+
+        .number-card p {
+            color: var(--text-secondary);
+        }
+
+        /* =========================
+           SOBRE
+        ========================= */
+
+        .about {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about h3 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .about p {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+
+        .about-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+
+            border-radius: 16px;
+
+            padding: 30px;
+        }
+
+        .about-box ul {
+            list-style: none;
+        }
+
+        .about-box li {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .about-box li:last-child {
+            border-bottom: none;
+        }
+
+        .about-box li::before {
+            content: "✓";
+            color: var(--blue);
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        /* =========================
+           RECURSOS
+        ========================= */
+
+        #recursos {
+            background: var(--bg-light);
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 14px;
+
+            padding: 30px;
+
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(79, 140, 255, 0.40);
+        }
+
+        .card-icon {
+            font-size: 30px;
+            margin-bottom: 18px;
+        }
+
+        .card h3 {
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
+
+        /* =========================
+           TECNOLOGIAS
+        ========================= */
+
+        .technologies {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .technology {
+            padding: 14px 22px;
+
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 30px;
+
+            color: var(--text-secondary);
+
+            transition: 0.3s;
+        }
+
+        .technology:hover {
+            color: white;
+            border-color: var(--blue);
+        }
+
+        /* =========================
+           DASHBOARD
+        ========================= */
+
+        .dashboard {
+            text-align: center;
+
+            background:
+                radial-gradient(
+                    circle at center,
+                    rgba(79, 140, 255, 0.14),
+                    transparent 55%
+                );
+        }
+
+        .dashboard-box {
+            max-width: 850px;
+            margin: auto;
+
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 20px;
+
+            padding: 55px 30px;
+        }
+
+        .dashboard-box h2 {
+            font-size: 38px;
+            margin-bottom: 15px;
+        }
+
+        .dashboard-box p {
+            color: var(--text-secondary);
+            max-width: 650px;
+            margin: 0 auto 30px;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
 
         footer {
+            background: #050c16;
+
+            border-top: 1px solid var(--border);
+
+            padding: 40px 25px;
+
             text-align: center;
-            background-color: #1f4e79;
-            color: white;
-            padding: 25px 20px;
-            margin-top: 40px;
+        }
+
+        footer h3 {
+            margin-bottom: 10px;
+        }
+
+        footer p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin: 4px 0;
+        }
+
+        /* =========================
+           RESPONSIVIDADE
+        ========================= */
+
+        @media (max-width: 900px) {
+
+            .hero-container,
+            .about {
+                grid-template-columns: 1fr;
+            }
+
+            .numbers-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero-card {
+                max-width: 600px;
+            }
         }
 
         @media (max-width: 600px) {
-            header h1 {
-                font-size: 28px;
+
+            .navbar {
+                height: 65px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding-top: 110px;
+            }
+
+            .hero h1 {
+                font-size: 42px;
+            }
+
+            .hero p {
+                font-size: 16px;
             }
 
             section {
-                padding: 20px;
+                padding: 75px 20px;
+            }
+
+            .numbers-grid,
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title h2 {
+                font-size: 30px;
+            }
+
+            .info-line {
+                flex-direction: column;
+                gap: 4px;
+            }
+
+            .info-line span:last-child {
+                text-align: left;
             }
         }
     </style>
@@ -122,106 +599,545 @@
 
 <body>
 
+    <!-- =========================
+         NAVBAR
+    ========================= -->
+
     <header>
-        <h1>📊 Análise e Visualização de Dados de Redes Sociais no Brasil</h1>
-        <p>Projeto de análise de dados utilizando Python</p>
+
+        <nav class="navbar">
+
+            <a href="#inicio" class="logo">
+                DATA<span>SOCIAL</span>
+            </a>
+
+            <ul class="nav-links">
+
+                <li>
+                    <a href="#inicio">Início</a>
+                </li>
+
+                <li>
+                    <a href="#numeros">Números</a>
+                </li>
+
+                <li>
+                    <a href="#sobre">Sobre</a>
+                </li>
+
+                <li>
+                    <a href="#recursos">Recursos</a>
+                </li>
+
+                <li>
+                    <a href="#tecnologias">Tecnologias</a>
+                </li>
+
+                <li>
+                    <a href="#dashboard" class="nav-button">
+                        Dashboard
+                    </a>
+                </li>
+
+            </ul>
+
+        </nav>
+
     </header>
 
-    <main>
 
-        <section class="informacoes">
-            <h2>👨‍🎓 Informações do Projeto</h2>
+    <!-- =========================
+         HERO
+    ========================= -->
 
-            <p><strong>Disciplina:</strong> Linguagem de Programação — Análise e Visualização de Dados com Python</p>
-            <p><strong>Professor:</strong> Alexandre Neves Louzada</p>
-            <p><strong>Aluno:</strong> Gustavo de Madruga Maciel</p>
-        </section>
+    <section class="hero" id="inicio">
 
-        <section>
-            <h2>🧩 Sobre o Projeto</h2>
+        <div class="hero-container">
 
-            <p>
-                Este projeto tem como objetivo analisar dados simulados de redes sociais
-                brasileiras utilizando Python e ferramentas de análise e visualização de dados.
-            </p>
+            <div>
 
-            <p>
-                A análise compara diferentes plataformas, perfis, categorias e tipos de conteúdo,
-                utilizando métricas como seguidores, curtidas, comentários, compartilhamentos,
-                visualizações, alcance e taxa de engajamento.
-            </p>
-        </section>
+                <span class="tag">
+                    PROJETO G1 • ANÁLISE DE DADOS
+                </span>
 
-        <section>
-            <h2>🎯 Objetivos</h2>
+                <h1>
+                    Análise de
+                    <span>Redes Sociais</span>
+                    no Brasil
+                </h1>
 
-            <ul>
-                <li>Realizar análise exploratória dos dados;</li>
-                <li>Realizar a limpeza e preparação da base;</li>
-                <li>Criar novas métricas;</li>
-                <li>Calcular indicadores de desempenho (KPIs);</li>
-                <li>Criar visualizações dos resultados;</li>
-                <li>Analisar a correlação entre as principais métricas;</li>
-                <li>Utilizar banco de dados SQLite com SQLAlchemy;</li>
-                <li>Desenvolver um dashboard interativo.</li>
-            </ul>
-        </section>
+                <p>
+                    Uma análise exploratória de dados simulados de redes sociais
+                    brasileiras, utilizando Python para identificar padrões,
+                    métricas de desempenho e relações entre diferentes variáveis.
+                </p>
 
-        <section>
-            <h2>🛠️ Tecnologias Utilizadas</h2>
+                <div class="hero-buttons">
 
-            <div class="tecnologias">
-                <span class="tecnologia">Python</span>
-                <span class="tecnologia">Pandas</span>
-                <span class="tecnologia">Matplotlib</span>
-                <span class="tecnologia">Seaborn</span>
-                <span class="tecnologia">Streamlit</span>
-                <span class="tecnologia">SQLAlchemy</span>
-                <span class="tecnologia">SQLite</span>
-                <span class="tecnologia">Jupyter Notebook</span>
-                <span class="tecnologia">GitHub</span>
+                    <a href="#dashboard" class="button button-primary">
+                        🚀 Acessar Dashboard
+                    </a>
+
+                    <a
+                        href="https://github.com/gstvmadruga/projeto-g1"
+                        target="_blank"
+                        class="button button-secondary"
+                    >
+                        💻 Ver GitHub
+                    </a>
+
+                </div>
+
             </div>
-        </section>
 
-        <section>
-            <h2>📊 Dashboard</h2>
 
-            <p>
-                O projeto possui um dashboard interativo desenvolvido com Streamlit,
-                permitindo a aplicação de filtros, visualização de KPIs, gráficos e
-                consulta dos dados das publicações.
-            </p>
+            <div class="hero-card">
 
-            <div class="botoes">
-                <a href="#" class="botao">📊 Acessar Dashboard</a>
-                <a href="#" class="botao">💻 Repositório GitHub</a>
+                <h3>Informações do Projeto</h3>
+
+                <div class="info-line">
+                    <span>Disciplina</span>
+                    <span>Análise e Visualização de Dados</span>
+                </div>
+
+                <div class="info-line">
+                    <span>Professor</span>
+                    <span>Alexandre Neves Louzada</span>
+                </div>
+
+                <div class="info-line">
+                    <span>Aluno</span>
+                    <span>Gustavo de Madruga Maciel</span>
+                </div>
+
+                <div class="info-line">
+                    <span>Base analisada</span>
+                    <span>Redes Sociais no Brasil</span>
+                </div>
+
             </div>
-        </section>
 
-        <section>
-            <h2>📓 Análise dos Dados</h2>
+        </div>
 
-            <p>
-                O notebook apresenta todas as etapas da análise, desde a introdução ao problema
-                e preparação dos dados até a criação dos KPIs, gráficos, análise de correlação,
-                interpretação dos resultados e conclusão.
-            </p>
-        </section>
+    </section>
 
-    </main>
+
+    <!-- =========================
+         NÚMEROS
+    ========================= -->
+
+    <section id="numeros">
+
+        <div class="container">
+
+            <div class="section-title">
+
+                <span>Dados da pesquisa</span>
+
+                <h2>
+                    O projeto em números
+                </h2>
+
+                <p>
+                    Principais informações encontradas na base de dados utilizada
+                    durante a análise.
+                </p>
+
+            </div>
+
+
+            <div class="numbers-grid">
+
+                <div class="number-card">
+
+                    <div class="number">
+                        4.440
+                    </div>
+
+                    <p>
+                        Publicações analisadas
+                    </p>
+
+                </div>
+
+
+                <div class="number-card">
+
+                    <div class="number">
+                        10
+                    </div>
+
+                    <p>
+                        Anos de dados
+                    </p>
+
+                </div>
+
+
+                <div class="number-card">
+
+                    <div class="number">
+                        6
+                    </div>
+
+                    <p>
+                        Plataformas
+                    </p>
+
+                </div>
+
+
+                <div class="number-card">
+
+                    <div class="number">
+                        4
+                    </div>
+
+                    <p>
+                        Perfis analisados
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         SOBRE
+    ========================= -->
+
+    <section id="sobre">
+
+        <div class="container">
+
+            <div class="section-title">
+
+                <span>Sobre o projeto</span>
+
+                <h2>
+                    Entendendo os dados
+                </h2>
+
+            </div>
+
+
+            <div class="about">
+
+                <div>
+
+                    <h3>
+                        Análise de desempenho nas redes sociais
+                    </h3>
+
+                    <p>
+                        Este projeto tem como objetivo analisar dados simulados
+                        de publicações realizadas em diferentes redes sociais
+                        brasileiras.
+                    </p>
+
+                    <p>
+                        Foram analisadas informações como seguidores, curtidas,
+                        comentários, compartilhamentos, visualizações, alcance
+                        e taxa de engajamento.
+                    </p>
+
+                    <p>
+                        Através da análise exploratória e da visualização de dados,
+                        buscamos identificar padrões e diferenças entre plataformas,
+                        perfis, categorias e tipos de conteúdo.
+                    </p>
+
+                </div>
+
+
+                <div class="about-box">
+
+                    <ul>
+
+                        <li>
+                            Comparação entre plataformas
+                        </li>
+
+                        <li>
+                            Análise de tipos de conteúdo
+                        </li>
+
+                        <li>
+                            Análise dos perfis
+                        </li>
+
+                        <li>
+                            Evolução temporal
+                        </li>
+
+                        <li>
+                            Indicadores de desempenho
+                        </li>
+
+                        <li>
+                            Análise de correlação
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         RECURSOS
+    ========================= -->
+
+    <section id="recursos">
+
+        <div class="container">
+
+            <div class="section-title">
+
+                <span>Funcionalidades</span>
+
+                <h2>
+                    Recursos desenvolvidos
+                </h2>
+
+                <p>
+                    Principais recursos utilizados durante o desenvolvimento
+                    da análise e do dashboard.
+                </p>
+
+            </div>
+
+
+            <div class="cards">
+
+                <div class="card">
+
+                    <div class="card-icon">
+                        📊
+                    </div>
+
+                    <h3>
+                        Dashboard Interativo
+                    </h3>
+
+                    <p>
+                        Dashboard desenvolvido com Streamlit contendo filtros,
+                        KPIs, gráficos e tabela de dados.
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-icon">
+                        🗄️
+                    </div>
+
+                    <h3>
+                        Banco de Dados
+                    </h3>
+
+                    <p>
+                        Utilização de SQLite e SQLAlchemy para armazenamento
+                        e leitura dos dados.
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-icon">
+                        📈
+                    </div>
+
+                    <h3>
+                        Análise Temporal
+                    </h3>
+
+                    <p>
+                        Análise da evolução da taxa média de engajamento
+                        ao longo dos anos.
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-icon">
+                        🔗
+                    </div>
+
+                    <h3>
+                        Correlação
+                    </h3>
+
+                    <p>
+                        Análise da relação entre seguidores, curtidas,
+                        comentários, visualizações, alcance e engajamento.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         TECNOLOGIAS
+    ========================= -->
+
+    <section id="tecnologias">
+
+        <div class="container">
+
+            <div class="section-title">
+
+                <span>Desenvolvimento</span>
+
+                <h2>
+                    Tecnologias utilizadas
+                </h2>
+
+                <p>
+                    Ferramentas utilizadas na análise, visualização,
+                    armazenamento e apresentação dos dados.
+                </p>
+
+            </div>
+
+
+            <div class="technologies">
+
+                <div class="technology">
+                    🐍 Python
+                </div>
+
+                <div class="technology">
+                    🐼 Pandas
+                </div>
+
+                <div class="technology">
+                    📊 Matplotlib
+                </div>
+
+                <div class="technology">
+                    🎨 Seaborn
+                </div>
+
+                <div class="technology">
+                    🎈 Streamlit
+                </div>
+
+                <div class="technology">
+                    🗄️ SQLite
+                </div>
+
+                <div class="technology">
+                    🔗 SQLAlchemy
+                </div>
+
+                <div class="technology">
+                    📓 Jupyter Notebook
+                </div>
+
+                <div class="technology">
+                    💻 GitHub
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         DASHBOARD
+    ========================= -->
+
+    <section class="dashboard" id="dashboard">
+
+        <div class="container">
+
+            <div class="dashboard-box">
+
+                <h2>
+                    Explore os dados
+                </h2>
+
+                <p>
+                    Acesse o dashboard interativo para visualizar os principais
+                    indicadores, aplicar filtros e explorar os resultados
+                    da análise de redes sociais.
+                </p>
+
+                <!--
+                    SUBSTITUIR O # PELO LINK DO STREAMLIT
+                -->
+
+                <a
+                    href="#"
+                    class="button button-primary"
+                >
+                    🚀 Abrir Dashboard
+                </a>
+
+                <a
+                    href="https://github.com/gstvmadruga/projeto-g1"
+                    target="_blank"
+                    class="button button-secondary"
+                >
+                    💻 Repositório GitHub
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         FOOTER
+    ========================= -->
 
     <footer>
-        <p>
-            Projeto desenvolvido por Gustavo de Madruga Maciel
-        </p>
+
+        <h3>
+            Análise e Visualização de Dados de Redes Sociais no Brasil
+        </h3>
 
         <p>
-            Linguagem de Programação — Análise e Visualização de Dados com Python
+            Disciplina: Linguagem de Programação — Análise e Visualização de Dados com Python
         </p>
 
         <p>
             Professor: Alexandre Neves Louzada
         </p>
+
+        <p>
+            Aluno: Gustavo de Madruga Maciel
+        </p>
+
+        <p style="margin-top: 18px;">
+            © 2026 • Projeto G1
+        </p>
+
     </footer>
 
 </body>
